@@ -7,6 +7,8 @@ name = "gpr-agent"
 version = "0.3.0"
 description = "Interpret ground-penetrating radar and map underground services to GIS (GeoPackage/Shapefile)"
 requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Macalister Walton"}]
 dependencies = ["numpy>=1.24", "matplotlib>=3.7", "pandas>=2.0", "geopandas>=0.14", "shapely>=2.0",
                 "pyogrio>=0.7"]
 

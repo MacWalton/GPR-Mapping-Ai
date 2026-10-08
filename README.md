@@ -258,3 +258,7 @@ tests/
 
 Issues and pull requests are welcome – especially results on real surveys (with potholed
 depths) and labelled radargrams that could help train the learned detector.
+
+## Licence
+
+MIT – see [LICENSE](LICENSE). Provided as is, without warranty; see the status note at the top.

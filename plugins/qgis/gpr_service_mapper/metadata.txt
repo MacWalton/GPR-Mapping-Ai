@@ -9,6 +9,7 @@ homepage=https://github.com/MacWalton/GPR-Mapping-Ai
 repository=https://github.com/MacWalton/GPR-Mapping-Ai
 tracker=https://github.com/MacWalton/GPR-Mapping-Ai/issues
 category=Analysis
+license=MIT
 tags=gpr,ground penetrating radar,utilities,underground services,subsurface utility engineering,AS5488,geophysics,processing
 icon=icon.svg
 experimental=True
