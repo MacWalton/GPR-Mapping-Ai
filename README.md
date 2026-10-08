@@ -19,8 +19,8 @@ depth, traces them across survey lines, and exports the result as **GeoPackage**
 
 ## Run it inside QGIS
 
-**QGIS 3.22+** – download `gpr_service_mapper_qgis.zip` from the
-[Releases](../../releases) page (or build it with `python build_plugins.py`), then
+**QGIS 3.22+** – download [`gpr_service_mapper_qgis.zip`](download/gpr_service_mapper_qgis.zip)
+(on that page click the **Download raw file** button; or build it with `python build_plugins.py`), then
 *Plugins ▸ Manage and Install Plugins ▸ Install from ZIP*. It adds a Processing algorithm,
 toolbar button and menu, and loads styled layers into the project.
 
