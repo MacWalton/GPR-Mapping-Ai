@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+dist/
+sample_data/
+out/
+plugins/qgis/gpr_service_mapper/gpr_agent/
+*.egg-info/
+.pytest_cache/

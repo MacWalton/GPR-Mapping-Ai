@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpr-agent"
+version = "0.3.0"
+description = "Interpret ground-penetrating radar and map underground services to GIS (GeoPackage/Shapefile)"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "matplotlib>=3.7", "pandas>=2.0", "geopandas>=0.14", "shapely>=2.0",
+                "pyogrio>=0.7"]
+
+[project.optional-dependencies]
+ml = ["onnxruntime"]
+test = ["pytest", "pyproj", "scipy"]
+
+[project.scripts]
+gpr-agent = "gpr_agent.__main__:main"
+
+[tool.setuptools]
+packages = ["gpr_agent"]

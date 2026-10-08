@@ -1,0 +1,7 @@
+numpy>=1.24
+matplotlib>=3.7
+# command-line file writing:
+geopandas>=0.14
+shapely>=2.0
+pyogrio>=0.7
+pandas>=2.0
