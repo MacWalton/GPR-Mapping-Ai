@@ -1,6 +1,6 @@
-"""Bundle the gpr_agent core into the QGIS plug-in and zip it.
+"""Bundle the gpr_agent core into the QGIS plug-in and the ArcGIS Pro toolbox and zip them.
 
-python build_plugins.py   ->  dist/gpr_service_mapper_qgis.zip
+python build_plugins.py   ->  dist/gpr_service_mapper_qgis.zip, dist/GPR_Service_Mapper_ArcGIS.zip
 """
 import shutil
 import zipfile
@@ -31,6 +31,10 @@ def main():
     q = ROOT / "plugins" / "qgis" / "gpr_service_mapper"
     vendor(q / "gpr_agent")
     zipdir(q, DIST / "gpr_service_mapper_qgis.zip", "gpr_service_mapper")
+
+    a = ROOT / "plugins" / "arcgis" / "GPR_Service_Mapper"   # ongoing testing - use at own risk
+    vendor(a / "gpr_agent")
+    zipdir(a, DIST / "GPR_Service_Mapper_ArcGIS.zip", "GPR_Service_Mapper")
 
     for z in DIST.glob("*.zip"):
         print(z, z.stat().st_size // 1024, "KB")

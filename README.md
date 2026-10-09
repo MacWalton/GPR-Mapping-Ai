@@ -1,7 +1,9 @@
 # GPR Service Mapper – automated GPR mapping using an AI agent
 
-> **Status:** working prototype. Field testing on real surveys is ongoing. Output is decision
-> support for a competent locator – verify by potholing before excavating near services.
+> **Status: ongoing testing – use at your own risk.** This is a working prototype. Field testing
+> on real surveys is ongoing, and the ArcGIS Pro toolbox in particular has not yet been verified in
+> ArcGIS Pro field use. Output is decision support for a competent locator – verify by potholing
+> before excavating near services. Provided as is, without warranty (see [LICENSE](LICENSE)).
 
 An interpretation agent that reads raw ground-penetrating radar from **GSSI** and
 **Sensors & Software** systems, finds buried pipes, cables and ducts, estimates their
@@ -17,15 +19,21 @@ depth, traces them across survey lines, and exports the result as **GeoPackage**
                                                                    └─ training_labels/ (YOLO format)
 ```
 
-## Run it inside QGIS
+## Run it inside QGIS or ArcGIS Pro
 
 **QGIS 3.22+** – download [`gpr_service_mapper_qgis.zip`](download/gpr_service_mapper_qgis.zip)
 (on that page click the **Download raw file** button; or build it with `python build_plugins.py`), then
 *Plugins ▸ Manage and Install Plugins ▸ Install from ZIP*. It adds a Processing algorithm,
 toolbar button and menu, and loads styled layers into the project.
 
-No extra packages are needed: the engine uses only numpy (+ matplotlib for QA images), which
-QGIS already ships. Full instructions: `plugins/INSTALL.md`.
+**ArcGIS Pro 3.0+ (ongoing testing – use at own risk)** – download
+[`GPR_Service_Mapper_ArcGIS.zip`](download/GPR_Service_Mapper_ArcGIS.zip), unzip it somewhere
+permanent, then *Catalog ▸ Toolboxes ▸ Add Toolbox* and pick `GPR_Service_Mapper.pyt`. It writes a
+file geodatabase (+ Shapefiles, GeoPackage) and styles the map. It has been checked against a
+simulated arcpy only, not yet in ArcGIS Pro field use.
+
+Neither needs extra packages: the engine uses only numpy (+ matplotlib for QA images), which
+QGIS and ArcGIS Pro already ship. Full instructions: `plugins/INSTALL.md`.
 
 ## Sample data
 
@@ -94,7 +102,7 @@ If a line has no GPS file, the agent looks for, in order:
 | `type_hint`, `material` | metallic/water-filled vs air-filled/non-metallic, from polarity |
 | `size_class` | indicative small / medium / large from hyperbola shape (unreliable; not used for the class) |
 | `class_sugg`, `class_alt`, `class_conf`, `cls_basis` | suggested AS 5488 utility class (E C G W S D R F P U), alternatives, confidence (MEDIUM/LOW) and reasoning |
-| `svc_type` | AS 5488 code confirmed by the locator; `U` until then (pick-list in QGIS) |
+| `svc_type` | AS 5488 code confirmed by the locator; `U` until then (pick-list in QGIS/ArcGIS) |
 | `ql_suggest` | `B` candidate or `unverified` |
 | `review` / `note` | `OK` or `CHECK`, and why |
 
@@ -246,11 +254,14 @@ gpr_agent/
   synthetic.py   forward model + DZT/DT1 writers for testing
 plugins/
   qgis/gpr_service_mapper/       QGIS Processing plug-in (QgsVectorFileWriter, styling, layer group)
-  INSTALL.md                     install and use guide
-build_plugins.py                 bundles gpr_agent into the QGIS plug-in and zips it into dist/
+  arcgis/GPR_Service_Mapper/     ArcGIS Pro Python toolbox (.pyt + arcpy writer + map styling) - testing
+  INSTALL.md                     install and use guide for both
+build_plugins.py                 bundles gpr_agent into each plug-in and zips them into dist/
+download/                        ready-to-install builds of both
 tests/
   test_pipeline.py               end-to-end accuracy tests (pytest)
   check_qgis_plugin.py           runs the QGIS algorithm headless against real QGIS
+  check_arcgis_toolbox.py        runs the .pyt against a mock arcpy
   evaluate.py                    scores a run against a synthetic survey's truth.json
 ```
 

@@ -1,6 +1,6 @@
 # GPR Service Mapper – sample data
 
-Five synthetic GPR surveys for testing the QGIS plug-in or the
+Five synthetic GPR surveys for testing the QGIS plug-in, the ArcGIS Pro toolbox or the
 command line. They are written in the real instrument formats – GSSI `.DZT` + `.DZG` and
 Sensors & Software `.DT1` + `.HD` + `.GPS` – so the readers are exercised exactly as with
 field data. Each one is a 400 MHz zig-zag grid near Rockingham/Baldivis with known services,
@@ -31,6 +31,8 @@ folder, the two coordinate systems from the table and an output folder. For `03`
 *Straight survey lines*; for `05` open *Advanced parameters* and set the threshold and
 velocities.
 
+**ArcGIS Pro (ongoing testing – use at own risk):** GPR Service Mapper ▸ Interpret GPR Survey, with the same settings.
+
 **Command line** (from the `gpr-gis-agent` folder):
 
 ```bash
@@ -47,8 +49,8 @@ Everything in `_answer_key/` is the truth – open it after your own run, not be
 
 - `answer_key.gpkg` – layer **true_services** (every buried service with its true depth,
   diameter and expected polarity) and layer **point_objects** (the buried rocks/debris
-  that should *not* become services). Load it over your output; QGIS
-  reprojects on the fly.
+  that should *not* become services). Load it over your output; QGIS and ArcGIS
+  reproject on the fly.
 - `<survey>_truth.json` – the same, plus the true radar velocity and line ends.
 - `agent_runs/<survey>/` – what the agent produced with the recommended settings.
 - `EXPECTED_RESULTS.md` (next to this file) – the scores from those runs, so you can

@@ -1,8 +1,13 @@
-# GPR Service Mapper – QGIS plug-in
+# GPR Service Mapper – QGIS plug-in and ArcGIS Pro toolbox
 
-The plug-in runs the interpretation engine (`gpr_agent`, bundled inside it) and produces three layers, in the output coordinate system you choose – **Services**, **Detections**, **Survey lines** – plus an HTML
+> **Ongoing testing – use at your own risk.** Field testing on real surveys is ongoing. The
+> ArcGIS Pro toolbox has been checked against a simulated arcpy but not yet verified in ArcGIS
+> Pro field use. Check every result; verify depths by potholing before excavating.
+
+Both run the same interpretation engine (`gpr_agent`, bundled inside each) and produce the
+same three layers, in the output coordinate system you choose – **Services**, **Detections**, **Survey lines** – plus an HTML
 report with annotated radargrams. Nothing extra needs installing: the engine uses only
-numpy (and matplotlib for the QA images), which QGIS already ships.
+numpy (and matplotlib for the QA images), which both QGIS and ArcGIS Pro already ship.
 
 Inputs: a folder of GSSI `.DZT` (+ `.DZG`) or Sensors & Software `.DT1`/`.HD` (+ `.GPS`)
 lines. Lines without GPS can be placed with a `survey_lines.csv` (see *Coordinate systems*).
@@ -13,7 +18,7 @@ lines. Lines without GPS can be placed with a `survey_lines.csv` (see *Coordinat
 
 **Install**
 1. *Plugins ▸ Manage and Install Plugins… ▸ Install from ZIP*.
-2. Choose `gpr_service_mapper_qgis.zip` ▸ **Install Plugin**.
+2. Choose `gpr_service_mapper_qgis.zip` (from the repository's `download` folder) ▸ **Install Plugin**.
 
 **Run**
 - Click the toolbar button (green hyperbola icon), or *Plugins ▸ GPR Service Mapper*, or
@@ -39,6 +44,130 @@ processing.run("gprmapper:interpretsurvey",
 
 ---
 
+## ArcGIS Pro (3.0 or newer) – ongoing testing, use at own risk
+
+> **Warning:** the ArcGIS Pro toolbox is in ongoing testing and has not yet been verified in
+> ArcGIS Pro field use. Use it at your own risk, check every result, and report problems on the
+> [GitHub issues page](https://github.com/MacWalton/GPR-Mapping-Ai/issues).
+
+**Install**
+1. Unzip `GPR_Service_Mapper_ArcGIS.zip` (from the repository's `download` folder) somewhere permanent, e.g.
+   `Documents\ArcGIS\Toolboxes\GPR_Service_Mapper`. Keep the `gpr_agent` folder next to
+   the `.pyt` file.
+2. In the *Catalog* pane, right-click **Toolboxes ▸ Add Toolbox** and select
+   `GPR_Service_Mapper.pyt`. (To have it in every project, add it to your Favorites.)
+
+**Run**
+- Open *GPR Service Mapper ▸ Interpretation ▸ Interpret GPR Survey*.
+- Pick the survey folder (the output folder fills in as `<folder>_GIS`), then the coordinate
+  system the survey was captured in and the output coordinate system. Advanced options
+  are in the collapsed group at the bottom.
+
+**You get**
+- `gpr_services.gdb` with feature classes `services`, `detections`, `survey_lines`
+  (the master copy), plus `shapefile/` and `gpr_services.gpkg`.
+- The three layers added to the active map in a group *GPR - \<folder\>*: services
+  symbolised by AS 5488 class (dashed = check) and labelled with ID, class and depth,
+  detections green/amber, survey lines grey.
+- The HTML report as a derived output (click it in the tool's messages/history to open).
+- It works in ModelBuilder and from Python:
+
+```python
+arcpy.ImportToolbox(r"C:\...\GPR_Service_Mapper\GPR_Service_Mapper.pyt")
+arcpy.gprmapper.InterpretGPRSurvey(r"D:\Jobs\117\GPR", r"D:\Jobs\117\GIS",
+                                   arcpy.SpatialReference(7844), arcpy.SpatialReference(7850),
+                                   straight_lines=True)
+```
+
+If styling is skipped (older Pro, or no map open), the data is still written and added;
+a warning says so.
+
+## Coordinate systems
+
+Two settings, both defaulting to WGS 84 (EPSG:4326):
+
+- **Coordinate system the survey was captured in** – the datum/CRS of your GPS and any
+  coordinates in CSV files. NMEA GPS (`.DZG`, `.GPS`) is always latitude/longitude, so it is
+  read on this CRS's datum. If you choose a projected CRS (e.g. MGA), NMEA is read on its
+  datum (GDA2020 for MGA2020) and any eastings/northings in CSVs are read in that projection.
+- **Output coordinate system** – the CRS the layers are written in.
+
+The agent works on the survey's own datum throughout, so the only datum change is the one you
+ask for at the end. If the output datum differs from the survey datum, QGIS/ArcGIS applies its
+datum transformation and the run log shows a *Datum change* warning. In Perth, GDA2020, GDA94
+and WGS 84 each differ from one another by roughly 1.5–2 m, so pick the datum your
+GNSS corrections were on.
+
+| If your survey was… | Survey CRS | Usual output |
+|---|---|---|
+| RTK on GDA2020 corrections (check your correction service's datum) | GDA2020 – EPSG:7844 | MGA2020 zone 50 – EPSG:7850 |
+| RTK on older GDA94 corrections | GDA94 – EPSG:4283 | MGA94 zone 50 – EPSG:28350 |
+| Autonomous/SBAS GNSS (no corrections) | WGS 84 – EPSG:4326 | EPSG:7850 or 4326 |
+| Line ends pegged and surveyed in MGA2020 | MGA2020 zone 50 – EPSG:7850 | EPSG:7850 |
+
+Zone 50 covers Perth and most of the South West; use zones 49–52 elsewhere in WA.
+
+**CSV coordinate columns** (either style; the column names decide which):
+
+- Per-line sidecar `<LINE>.csv`: `trace,lon,lat` or `trace,easting,northing` (also `x,y` / `e,n`).
+- `survey_lines.csv`: `line,start_lon,start_lat,end_lon,end_lat` or
+  `line,start_easting,start_northing,end_easting,end_northing`.
+
+Eastings/northings with a geographic survey CRS are refused (that line is skipped with a
+message) rather than placed in the wrong spot.
+
+## Service classification
+
+Every traced service carries a classification. GPR on its own cannot identify the utility,
+so the agent suggests one from what the radar *can* tell, and the locator confirms it.
+
+| Field | Values | How it is set |
+|---|---|---|
+| `material` | `METALLIC/WATER-FILLED`, `NON-METALLIC/AIR-FILLED`, `INDETERMINATE` | Reflection polarity along the run (reversed = higher permittivity than the soil) |
+| `size_class` | `SMALL? (<100 mm)`, `MEDIUM? (100-300 mm)`, `LARGE? (>300 mm)` | Fitted cylinder radius (`diam_est`); indicative only, not used for the class |
+| `class_sugg` | AS 5488 code: `E` `C` `G` `W` `S` `D` `R` `F` `P` `U` | Rules on material and depth (below) |
+| `class_alt` | e.g. `S,G` | Other classes consistent with the same evidence |
+| `class_conf` | `MEDIUM` or `LOW` | `MEDIUM` only for a reliable run with steady polarity; never higher, because GPR cannot confirm utility type |
+| `cls_basis` | text | Why the class was suggested |
+| `svc_type` | AS 5488 code, `U` until confirmed | **Set by the locator** from EMI tracing, sondes, records or potholing. Drop-down pick-list in QGIS (value map) and ArcGIS (coded domain `AS5488_Utility`) |
+
+Detections also carry `material` (per crossing).
+
+**AS 5488 codes and colours** used for the map symbols:
+`E` Electricity – orange · `C` Communications – white · `G` Gas – yellow · `W` Water – blue ·
+`S` Sewer – cream · `D` Drainage/stormwater – green · `R` Reclaimed water – purple ·
+`F` Fire – red · `P` Petroleum – brown · `U` Unknown – pink.
+
+**Suggestion rules.** Only polarity (material) and depth are used. The fitted size is too
+unreliable to classify on: pipe size and soil velocity trade off in the hyperbola shape. So
+`size_class` is shown with a `?` as indicative only.
+
+| Material | Depth | Suggested | Alternatives |
+|---|---|---|---|
+| Metallic/water-filled | < 1.0 m | E | C, W |
+| Metallic/water-filled | ≥ 1.0 m | W | S, D, G |
+| Non-metallic/air-filled | < 0.7 m | C | E |
+| Non-metallic/air-filled | ≥ 0.7 m | G | C, E, D |
+| Indeterminate | – | U | – |
+
+On the sample data this gets the class right first time for 7 of 16 services, and the true
+class is the suggestion or one of its alternatives for 15 of 16. Treat it as a
+starting point for the locator, not an identification.
+
+The services layer is coloured by `svc_type` once you set it, otherwise by `class_sugg`;
+labels show `S3 G?  1.18 m`, where `?` means the class is the agent's suggestion. Dashed
+lines still mean the run needs checking.
+
+## Report coordinates
+
+The interpretation report's overview map is drawn in the **output coordinate system** – for
+MGA it has easting/northing axes, a grid, a scale bar and grid north. A *Service
+coordinates* table lists each service's start and end in the same system. The QGIS and
+ArcGIS tools project these with their own transformation engines, so the report matches the
+output layers exactly.
+
+---
+
 ## Fields worth knowing
 
 | Layer | Field | Meaning |
@@ -54,8 +183,9 @@ processing.run("gprmapper:interpretsurvey",
 
 ## Optional: trained detector (ONNX)
 
-The plug-in accepts an ONNX model in the advanced options. That needs `onnxruntime`:
-In QGIS, run `pip install onnxruntime` in the OSGeo4W Shell.
+Both tools accept an ONNX model in the advanced options. That needs `onnxruntime`:
+QGIS – run `pip install onnxruntime` in the OSGeo4W Shell; ArcGIS Pro – clone the default
+Python environment (*Settings ▸ Package Manager*), add `onnxruntime`, and activate the clone.
 Without a model, the physics-based detector is used and nothing else is required.
 
 ## Troubleshooting
