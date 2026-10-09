@@ -21,7 +21,7 @@ from pyproj import Transformer  # noqa: E402
 from shapely.geometry import LineString, Point  # noqa: E402
 
 from evaluate import evaluate  # noqa: E402
-from gpr_agent import AgentConfig, DetectorConfig, SurveyAgent  # noqa: E402
+from gpr_agent import AgentConfig, DetectorConfig, SurveyAgent, __version__  # noqa: E402
 from gpr_agent.synthetic import DEFAULT_PIPES, Pipe, make_survey  # noqa: E402
 
 SCENARIOS = [
@@ -187,7 +187,7 @@ def main(out):
 
 def write_docs(out, results):
     L = ["# Expected results", "",
-         "The agent (v0.3.0) was run on each survey with the recommended settings. Its full",
+         f"The agent (v{__version__}) was run on each survey with the recommended settings. Its full",
          "outputs are in `_answer_key/agent_runs/` - look only after your own test.", "",
          "| Survey | Services | Traced | Max plan error (m) | Depth error range (m) | Polarity right | "
          "Real services passing review | False runs passing review | Rock/debris runs flagged CHECK | "

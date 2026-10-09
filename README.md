@@ -37,9 +37,13 @@ QGIS and ArcGIS Pro already ship. Full instructions: `plugins/INSTALL.md`.
 
 ## Sample data
 
-`python samples/build_samples.py sample_data` writes five test surveys (GSSI and Sensors &
-Software, RTK / handheld GNSS / pegged lines in MGA, sand and wet clay) with a blind answer
-key and the expected scores. See `sample_data/README.md` once built.
+Download [`GPR_sample_data.zip`](download/GPR_sample_data.zip) (46 MB): five synthetic test
+surveys in the real instrument formats (GSSI and Sensors & Software; RTK, handheld GNSS and
+pegged lines in MGA; sand and wet clay) with buried rocks and noise, a blind answer key and
+the expected scores. Unzip it and start with `GPR_sample_data/README.md`, which gives the
+settings for each survey in QGIS, ArcGIS Pro (testing) and the command line.
+
+To rebuild the same pack yourself: `python samples/build_samples.py sample_data`.
 
 ## Install (command line)
 
@@ -257,7 +261,7 @@ plugins/
   arcgis/GPR_Service_Mapper/     ArcGIS Pro Python toolbox (.pyt + arcpy writer + map styling) - testing
   INSTALL.md                     install and use guide for both
 build_plugins.py                 bundles gpr_agent into each plug-in and zips them into dist/
-download/                        ready-to-install builds of both
+download/                        ready-to-install builds of both + the sample data pack
 tests/
   test_pipeline.py               end-to-end accuracy tests (pytest)
   check_qgis_plugin.py           runs the QGIS algorithm headless against real QGIS
