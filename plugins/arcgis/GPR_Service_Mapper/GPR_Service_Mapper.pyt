@@ -15,7 +15,7 @@ if HERE not in sys.path:
 
 import arcpy  # noqa: E402
 
-TOOL_VERSION = "0.3.0"
+TOOL_VERSION = "0.3.1"
 
 
 def _reload_core():
