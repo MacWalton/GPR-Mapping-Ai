@@ -19,6 +19,38 @@ depth, traces them across survey lines, and exports the result as **GeoPackage**
                                                                    └─ training_labels/ (YOLO format)
 ```
 
+## Screenshots
+
+All from sample survey 02 in the [sample data pack](download/GPR_sample_data.zip), run through the
+QGIS plug-in (survey on GDA2020, output in MGA2020 zone 50). The data is synthetic; the screens and
+outputs are the tool's own.
+
+**1. Run it from the QGIS Processing Toolbox** – pick the survey folder and the two coordinate systems.
+
+![QGIS Processing dialog for Interpret GPR survey](docs/screenshots/qgis_processing_dialog.png)
+
+**2. The services load into QGIS** – coloured by AS 5488 class and labelled with ID, suggested class
+and depth. Green dots are confident detections; the amber cross is one flagged for checking.
+
+![Services, detections and survey lines in QGIS](docs/screenshots/qgis_map_layers.png)
+
+**3. Every service carries its classification** – material from polarity, suggested class with
+alternatives, and an `svc_type` pick-list for the class the locator confirms.
+
+![Services attribute table in QGIS](docs/screenshots/qgis_attribute_table.png)
+
+**4. Each radargram is annotated** – every fitted hyperbola with its depth (right axis).
+
+![Annotated radargram for one survey line](docs/screenshots/annotated_radargram.png)
+
+**5. An interpretation report** – site velocity, each service's class, depth and review status, and
+the coordinates in the output coordinate system.
+
+![HTML interpretation report](docs/screenshots/interpretation_report.png)
+
+The ArcGIS Pro toolbox (ongoing testing) produces the same layers and report; no ArcGIS Pro
+screenshots yet.
+
 ## Run it inside QGIS or ArcGIS Pro
 
 **QGIS 3.22+** – download [`gpr_service_mapper_qgis.zip`](download/gpr_service_mapper_qgis.zip)
@@ -262,6 +294,7 @@ plugins/
   INSTALL.md                     install and use guide for both
 build_plugins.py                 bundles gpr_agent into each plug-in and zips them into dist/
 download/                        ready-to-install builds of both + the sample data pack
+docs/screenshots/                screenshots used in this README
 tests/
   test_pipeline.py               end-to-end accuracy tests (pytest)
   check_qgis_plugin.py           runs the QGIS algorithm headless against real QGIS
