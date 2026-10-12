@@ -40,7 +40,7 @@ class InterpretGPRSurvey(object):
     def __init__(self):
         self.label = "Interpret GPR Survey"
         self.description = (
-            "TESTING RELEASE - ArcGIS Pro toolbox is in ongoing testing and has not yet been verified in ArcGIS Pro field use. Use at your own risk and check every result. "
+            "TESTING RELEASE - runs in ArcGIS Pro (tested on 3.5.9); field testing on real surveys is ongoing. Use at your own risk and check every result. "
             "Reads a folder of GPR lines (GSSI .DZT + .DZG, or Sensors & Software .DT1 + .HD + .GPS), "
             "detects pipe and cable hyperbolas, estimates site velocity and depth, traces services across "
             "lines and writes Services, Detections and Survey lines feature classes in the chosen output "
@@ -147,7 +147,7 @@ class InterpretGPRSurvey(object):
             v = parameters[i].value
             return default if v is None else v
 
-        messages.addWarningMessage("TESTING RELEASE - ArcGIS Pro toolbox is in ongoing testing and has not yet been verified in ArcGIS Pro field use. Use at your own risk and check every result.")
+        messages.addWarningMessage("TESTING RELEASE - runs in ArcGIS Pro (tested on 3.5.9); field testing on real surveys is ongoing. Use at your own risk and check every result.")
         folder = parameters[self.IN_FOLDER].valueAsText
         out_dir = parameters[self.OUT_FOLDER].valueAsText
         channel = int(val(self.CHANNEL, -1))

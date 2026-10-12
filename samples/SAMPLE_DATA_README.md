@@ -31,7 +31,7 @@ folder, the two coordinate systems from the table and an output folder. For `03`
 *Straight survey lines*; for `05` open *Advanced parameters* and set the threshold and
 velocities.
 
-**ArcGIS Pro (ongoing testing – use at own risk):** GPR Service Mapper ▸ Interpret GPR Survey, with the same settings.
+**ArcGIS Pro (tested on 3.5.9; ongoing testing – use at own risk):** GPR Service Mapper ▸ Interpret GPR Survey, with the same settings.
 
 **Command line** (from the `gpr-gis-agent` folder):
 

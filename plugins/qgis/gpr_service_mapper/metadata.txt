@@ -15,7 +15,7 @@ icon=icon.svg
 experimental=True
 deprecated=False
 hasProcessingProvider=yes
-changelog=0.3.1 MIT licence; repository links; author email removed; ArcGIS Pro toolbox released alongside (ongoing testing - use at own risk).
+changelog=0.3.1 ArcGIS Pro toolbox tested in ArcGIS Pro 3.5.9. MIT licence; repository links; author email removed; ArcGIS Pro toolbox released alongside (ongoing testing - use at own risk).
   0.3.0 Service classification: material, size class, suggested AS 5488 utility class with alternatives and confidence; svc_type pick-list; services coloured by AS 5488 class. Report overview map and service coordinates in the output coordinate system.
   0.2.1 Re-fits services that cross survey lines at an angle (correct depth and polarity); runs with flipping polarity or erratic depth are flagged CHECK.
   0.2.0 Survey and output coordinate system selection (GDA2020, GDA94, MGA, WGS 84 and any QGIS CRS); eastings/northings accepted in CSVs; datum-change warning.

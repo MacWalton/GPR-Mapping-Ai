@@ -1,8 +1,8 @@
 # GPR Service Mapper – automated GPR mapping using an AI agent
 
 > **Status: ongoing testing – use at your own risk.** This is a working prototype. Field testing
-> on real surveys is ongoing, and the ArcGIS Pro toolbox in particular has not yet been verified in
-> ArcGIS Pro field use. Output is decision support for a competent locator – verify by potholing
+> on real surveys is ongoing. The QGIS plug-in and the ArcGIS Pro toolbox (tested in ArcGIS Pro
+> 3.5.9) both run. Output is decision support for a competent locator – verify by potholing
 > before excavating near services. Provided as is, without warranty (see [LICENSE](LICENSE)).
 
 An interpretation agent that reads raw ground-penetrating radar from **GSSI** and
@@ -48,8 +48,8 @@ the coordinates in the output coordinate system.
 
 ![HTML interpretation report](docs/screenshots/interpretation_report.png)
 
-The ArcGIS Pro toolbox (ongoing testing) produces the same layers and report; no ArcGIS Pro
-screenshots yet.
+The ArcGIS Pro toolbox (tested in ArcGIS Pro 3.5.9) produces the same layers and report; ArcGIS Pro
+screenshots to follow.
 
 ## Run it inside QGIS or ArcGIS Pro
 
@@ -58,11 +58,11 @@ screenshots yet.
 *Plugins ▸ Manage and Install Plugins ▸ Install from ZIP*. It adds a Processing algorithm,
 toolbar button and menu, and loads styled layers into the project.
 
-**ArcGIS Pro 3.0+ (ongoing testing – use at own risk)** – download
+**ArcGIS Pro (tested on 3.5.9; ongoing testing – use at own risk)** – download
 [`GPR_Service_Mapper_ArcGIS.zip`](download/GPR_Service_Mapper_ArcGIS.zip), unzip it somewhere
 permanent, then *Catalog ▸ Toolboxes ▸ Add Toolbox* and pick `GPR_Service_Mapper.pyt`. It writes a
-file geodatabase (+ Shapefiles, GeoPackage) and styles the map. It has been checked against a
-simulated arcpy only, not yet in ArcGIS Pro field use.
+file geodatabase (+ Shapefiles, GeoPackage) and styles the map. It has been tested in ArcGIS Pro 3.5.9;
+field testing on real surveys is ongoing.
 
 Neither needs extra packages: the engine uses only numpy (+ matplotlib for QA images), which
 QGIS and ArcGIS Pro already ship. Full instructions: `plugins/INSTALL.md`.

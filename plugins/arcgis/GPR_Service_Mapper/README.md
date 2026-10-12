@@ -1,8 +1,8 @@
 # GPR Service Mapper – QGIS plug-in and ArcGIS Pro toolbox
 
-> **Ongoing testing – use at your own risk.** Field testing on real surveys is ongoing. The
-> ArcGIS Pro toolbox has been checked against a simulated arcpy but not yet verified in ArcGIS
-> Pro field use. Check every result; verify depths by potholing before excavating.
+> **Ongoing testing – use at your own risk.** Field testing on real surveys is ongoing. The QGIS
+> plug-in and the ArcGIS Pro toolbox (tested in ArcGIS Pro 3.5.9) both run, but check every
+> result and verify depths by potholing before excavating.
 
 Both run the same interpretation engine (`gpr_agent`, bundled inside each) and produce the
 same three layers, in the output coordinate system you choose – **Services**, **Detections**, **Survey lines** – plus an HTML
@@ -44,10 +44,10 @@ processing.run("gprmapper:interpretsurvey",
 
 ---
 
-## ArcGIS Pro (3.0 or newer) – ongoing testing, use at own risk
+## ArcGIS Pro (tested on 3.5.9) – ongoing testing, use at own risk
 
-> **Warning:** the ArcGIS Pro toolbox is in ongoing testing and has not yet been verified in
-> ArcGIS Pro field use. Use it at your own risk, check every result, and report problems on the
+> **Warning:** the ArcGIS Pro toolbox has been tested in ArcGIS Pro 3.5.9; field testing on real
+> surveys is ongoing. Use it at your own risk, check every result, and report problems on the
 > [GitHub issues page](https://github.com/MacWalton/GPR-Mapping-Ai/issues).
 
 **Install**
