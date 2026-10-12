@@ -21,9 +21,12 @@ depth, traces them across survey lines, and exports the result as **GeoPackage**
 
 ## Screenshots
 
-All from sample survey 02 in the [sample data pack](download/GPR_sample_data.zip), run through the
-QGIS plug-in (survey on GDA2020, output in MGA2020 zone 50). The data is synthetic; the screens and
-outputs are the tool's own.
+All from the [sample data pack](download/GPR_sample_data.zip) (synthetic surveys); the screens
+and outputs are the tools' own.
+
+### QGIS
+
+Sample survey 02 run through the QGIS plug-in (survey on GDA2020, output in MGA2020 zone 50).
 
 **1. Run it from the QGIS Processing Toolbox** – pick the survey folder and the two coordinate systems.
 
@@ -48,8 +51,31 @@ the coordinates in the output coordinate system.
 
 ![HTML interpretation report](docs/screenshots/interpretation_report.png)
 
-The ArcGIS Pro toolbox (tested in ArcGIS Pro 3.5.9) produces the same layers and report; ArcGIS Pro
-screenshots to follow.
+### ArcGIS Pro (tested on 3.5.9)
+
+Sample survey 01 (GSSI, RTK, sandy ground) run through the ArcGIS Pro toolbox, output in MGA2020
+zone 50. Basemap: Esri World Street Map (Night).
+
+**1. Run it from the Geoprocessing pane** – the same settings as QGIS, with the advanced options
+expanded.
+
+![Interpret GPR Survey in the ArcGIS Pro Geoprocessing pane](docs/screenshots/arcgis_geoprocessing_pane.png)
+
+**2. The services load into the map** – grouped as *GPR – \<survey\>*, symbolised by AS 5488 class
+and review status. The dashed yellow run (S4) is flagged CHECK: its polarity flips along the
+run, the signature of separate objects such as buried rocks rather than one service.
+
+![Services, detections and survey lines in ArcGIS Pro](docs/screenshots/arcgis_map_contents.png)
+
+**3. The interpretation report** – three services OK and the rock run flagged CHECK with the
+reason, plus the coordinates in MGA2020.
+
+![Interpretation report from the ArcGIS Pro run](docs/screenshots/arcgis_interpretation_report.png)
+
+**4. The report's overview map** in the output coordinate system, with grid, scale bar and north
+arrow.
+
+![Report overview map in MGA2020 zone 50](docs/screenshots/arcgis_report_overview.png)
 
 ## Run it inside QGIS or ArcGIS Pro
 
