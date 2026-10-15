@@ -26,28 +26,43 @@ and outputs are the tools' own.
 
 ### QGIS
 
-Sample survey 02 run through the QGIS plug-in (survey on GDA2020, output in MGA2020 zone 50).
+Sample survey 02 run through the QGIS plug-in, version 0.3.2 (survey on GDA2020, output in MGA2020
+zone 50).
 
-**1. Run it from the QGIS Processing Toolbox** – pick the survey folder and the two coordinate systems.
+**1. Find it in the Processing Toolbox** – *GPR Service Mapper ▸ Interpretation ▸ Interpret GPR
+survey* (also on the toolbar and the Plugins menu).
+
+![GPR Service Mapper in the QGIS Processing Toolbox](docs/screenshots/qgis_processing_toolbox.png)
+
+**2. Set up the run** – pick the survey folder and the two coordinate systems.
 
 ![QGIS Processing dialog for Interpret GPR survey](docs/screenshots/qgis_processing_dialog.png)
 
-**2. The services load into QGIS** – coloured by AS 5488 class and labelled with ID, suggested class
+**3. Advanced parameters** – velocity range, detection threshold, linking distances, an optional
+trained detector, and the distance units (metres or feet) for the radargram images.
+
+![Advanced parameters in the QGIS dialog](docs/screenshots/qgis_dialog_advanced.png)
+
+**4. Watch the agent work** – the Log tab shows each step and decision as it runs.
+
+![Run log in the QGIS Processing dialog](docs/screenshots/qgis_dialog_log.png)
+
+**5. The services load into QGIS** – coloured by AS 5488 class and labelled with ID, suggested class
 and depth. Green dots are confident detections; the amber cross is one flagged for checking.
 
 ![Services, detections and survey lines in QGIS](docs/screenshots/qgis_map_layers.png)
 
-**3. Every service carries its classification** – material from polarity, suggested class with
-alternatives, and an `svc_type` pick-list for the class the locator confirms.
+**6. Every service carries its depth and classification** – depth range, material from polarity,
+suggested class with alternatives, and an `svc_type` pick-list for the class the locator confirms.
 
 ![Services attribute table in QGIS](docs/screenshots/qgis_attribute_table.png)
 
-**4. Each radargram is annotated** – the source file name and line length, and every fitted
+**7. Each radargram is annotated** – the source file name and line length, and every fitted
 hyperbola with its depth (right axis). Distances and depths can be shown in metres or feet.
 
 ![Annotated radargram for one survey line](docs/screenshots/annotated_radargram.png)
 
-**5. An interpretation report** – site velocity, each service's class, depth and review status, and
+**8. An interpretation report** – site velocity, each service's class, depth and review status, and
 the coordinates in the output coordinate system.
 
 ![HTML interpretation report](docs/screenshots/interpretation_report.png)
