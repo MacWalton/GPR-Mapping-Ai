@@ -24,7 +24,8 @@ lines. Lines without GPS can be placed with a `survey_lines.csv` (see *Coordinat
 - Click the toolbar button (green hyperbola icon), or *Plugins ▸ GPR Service Mapper*, or
   *Processing Toolbox ▸ GPR Service Mapper ▸ Interpretation ▸ Interpret GPR survey*.
 - Pick the survey folder, the coordinate system the survey was captured in, the output
-  coordinate system and an output folder; tick *Straight survey lines* if your GNSS is not RTK. Advanced parameters hold the velocity range, sensitivity and linking distances.
+  coordinate system and an output folder; tick *Straight survey lines* if your GNSS is not RTK. Advanced parameters hold the velocity range, sensitivity, linking distances and the
+  distance units (metres or feet) for the radargram images.
 - It runs in the background with a progress bar and can be cancelled.
 
 **You get**
@@ -61,7 +62,8 @@ processing.run("gprmapper:interpretsurvey",
 - Open *GPR Service Mapper ▸ Interpretation ▸ Interpret GPR Survey*.
 - Pick the survey folder (the output folder fills in as `<folder>_GIS`), then the coordinate
   system the survey was captured in and the output coordinate system. Advanced options
-  are in the collapsed group at the bottom.
+  are in the collapsed group at the bottom, including *Distance units on radargram images*
+  (Metres or Feet).
 
 **You get**
 - `gpr_services.gdb` with feature classes `services`, `detections`, `survey_lines`

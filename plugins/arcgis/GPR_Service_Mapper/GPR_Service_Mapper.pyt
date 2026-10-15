@@ -15,7 +15,7 @@ if HERE not in sys.path:
 
 import arcpy  # noqa: E402
 
-TOOL_VERSION = "0.3.1"
+TOOL_VERSION = "0.3.2"
 
 
 def _reload_core():
@@ -34,8 +34,8 @@ class Toolbox(object):
 class InterpretGPRSurvey(object):
     # parameter indices
     (IN_FOLDER, OUT_FOLDER, SURVEY_CRS, OUTPUT_CRS, LINES_CSV, STRAIGHT, OFFSET, CHANNEL, VMIN, VMAX,
-     MAX_DEPTH, SENS, LINK, MINPTS, MODEL, SHP, GPKG, QA,
-     OUT_SERVICES, OUT_DETECTIONS, OUT_LINES, OUT_REPORT) = range(22)
+     MAX_DEPTH, SENS, LINK, MINPTS, MODEL, SHP, GPKG, QA, UNITS,
+     OUT_SERVICES, OUT_DETECTIONS, OUT_LINES, OUT_REPORT) = range(23)
 
     def __init__(self):
         self.label = "Interpret GPR Survey"
@@ -90,6 +90,8 @@ class InterpretGPRSurvey(object):
               parameterType="Optional", direction="Input", category=adv),
             P(name="qa_images", displayName="Draw QA radargram images", datatype="GPBoolean",
               parameterType="Optional", direction="Input", category=adv),
+            P(name="distance_units", displayName="Distance units on radargram images", datatype="GPString",
+              parameterType="Optional", direction="Input", category=adv),
             P(name="out_services", displayName="Services", datatype="DEFeatureClass",
               parameterType="Derived", direction="Output"),
             P(name="out_detections", displayName="Detections", datatype="DEFeatureClass",
@@ -101,9 +103,12 @@ class InterpretGPRSurvey(object):
         ]
         p[self.LINES_CSV].filter.list = ["csv", "txt"]
         p[self.MODEL].filter.list = ["onnx"]
+        p[self.UNITS].filter.type = "ValueList"
+        p[self.UNITS].filter.list = ["Metres", "Feet"]
         defaults = {self.STRAIGHT: False, self.OFFSET: 0.0, self.CHANNEL: -1, self.VMIN: 0.05,
                     self.VMAX: 0.16, self.MAX_DEPTH: 4.0, self.SENS: 6.0, self.LINK: 3.0,
-                    self.MINPTS: 3, self.SHP: True, self.GPKG: True, self.QA: True}
+                    self.MINPTS: 3, self.SHP: True, self.GPKG: True, self.QA: True,
+                    self.UNITS: "Metres"}
         for i, v in defaults.items():
             p[i].value = v
         p[self.SURVEY_CRS].value = arcpy.SpatialReference(4326)
@@ -171,6 +176,7 @@ class InterpretGPRSurvey(object):
             antenna_offset_m=float(val(self.OFFSET, 0.0)),
             model_path=parameters[self.MODEL].valueAsText or None,
             qa_images=bool(val(self.QA, True)),
+            distance_units="ft" if str(val(self.UNITS, "Metres")).lower().startswith("f") else "m",
             input_crs=crs.name,
             output_crs=f"{out_sr.name} ({out_sr.factoryCode})",
         )

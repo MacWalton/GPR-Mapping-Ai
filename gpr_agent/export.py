@@ -140,34 +140,57 @@ def _plt():
         return None
 
 
-def plot_line_qa(rg, dets, site_v: float, path: Path) -> bool:
+FEET_PER_M = 1 / 0.3048
+UNITS = {"m": (1.0, "m", "metres"), "ft": (FEET_PER_M, "ft", "feet")}
+
+
+def source_label(rg) -> str:
+    """File name the radargram came from (+ channel for multi-channel GSSI files)."""
+    f = rg.metadata.get("file")
+    name = Path(f).name if f else rg.name
+    ch = rg.metadata.get("channel")
+    hdr = rg.metadata.get("header") or {}
+    if ch is not None and hdr.get("rh_nchan", 1) > 1:
+        name += f" (channel {ch + 1})"
+    return name
+
+
+def plot_line_qa(rg, dets, site_v: float, path: Path, units: str = "m") -> bool:
+    """Annotated radargram. units: 'm' or 'ft' for the distance and depth axes and labels."""
     plt = _plt()
     if plt is None:
         return False
-    fig, ax = plt.subplots(figsize=(12, 4.5))
+    k, u, _ = UNITS.get(units, UNITS["m"])
+    fig, ax = plt.subplots(figsize=(12, 4.8))
     d = rg.data
     clip = np.percentile(np.abs(d), 99) or 1
     dx = rg.trace_spacing_m
-    ext = [0, rg.n_traces * dx, rg.n_samples * rg.dt_ns, 0]
+    length = rg.n_traces * dx
+    ext = [0, length * k, rg.n_samples * rg.dt_ns, 0]
     ax.imshow(d, cmap="gray", aspect="auto", vmin=-clip, vmax=clip, extent=ext)
     for det in dets:
         xs = np.linspace(det.distance_m - 1.0, det.distance_m + 1.0, 60)
         zr = det.velocity_m_ns * det.t0_ns / 2 + det.radius_m
         ts = det.t0_ns + 2 * (np.sqrt((xs - det.distance_m) ** 2 + zr ** 2) - zr) / det.velocity_m_ns
         col = "#18a558" if det.confidence >= 0.5 else "#e8a317"
-        ax.plot(xs, ts, color=col, lw=1.2, alpha=0.9)
-        label = f"{det.depth_m:.2f} m"
+        ax.plot(xs * k, ts, color=col, lw=1.2, alpha=0.9)
+        label = f"{det.depth_m * k:.2f} {u}"
         if det.service_id:
             label = f"S{det.service_id} " + label
-        ax.annotate(label, (det.distance_m, det.t0_ns), xytext=(0, -6), textcoords="offset points",
-                    ha="center", va="bottom", fontsize=7, color=col,
-                    bbox=dict(boxstyle="round,pad=0.15", fc="black", ec="none", alpha=0.55))
+        ax.annotate(label, (det.distance_m * k, det.t0_ns), xytext=(0, -6), textcoords="offset points",
+                    ha="center", va="bottom", fontsize=7.5, fontweight="bold",
+                    color="white" if det.confidence >= 0.5 else "black",
+                    bbox=dict(boxstyle="round,pad=0.2", fc=col, ec="none", alpha=0.9))
     ax.set_xlim(ext[0], ext[1])
     ax.set_ylim(ext[2], 0)
-    ax.set_xlabel("Distance along line (m)")
+    ax.set_xlabel(f"Distance along line ({u})")
     ax.set_ylabel("Two-way time (ns)")
-    sec = ax.secondary_yaxis("right", functions=(lambda t: t * site_v / 2, lambda z: 2 * z / site_v))
-    sec.set_ylabel(f"Depth (m) @ v={site_v:.3f} m/ns")
+    sec = ax.secondary_yaxis("right", functions=(lambda t: t * site_v / 2 * k, lambda z: 2 * z / k / site_v))
+    sec.set_ylabel(f"Depth ({u}) @ v={site_v:.3f} m/ns")
+    # file name + line length, top-left on the radargram
+    ax.text(0.005, 0.985, f"File: {source_label(rg)}   |   Length: {length * k:.2f} {u}",
+            transform=ax.transAxes, ha="left", va="top", fontsize=8.5, color="white",
+            bbox=dict(boxstyle="round,pad=0.3", fc="black", ec="none", alpha=0.6))
     ax.set_title(f"{rg.name}  -  {len(dets)} detections  (green = confident, amber = check)")
     fig.tight_layout()
     fig.savefig(path, dpi=130)

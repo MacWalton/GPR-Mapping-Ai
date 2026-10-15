@@ -56,7 +56,7 @@ def main(scratch):
     tbx = load_toolbox()
     tool = tbx.Toolbox().tools[0]()
     params = tool.getParameterInfo()
-    assert len(params) == 22 and params[tool.VMIN].category == "Advanced options"
+    assert len(params) == 23 and params[tool.VMIN].category == "Advanced options"
     print("toolbox:", tbx.Toolbox().label, "| tool:", tool.label, "| params:", [p.name for p in params])
 
     # validation behaviour

@@ -42,7 +42,8 @@ alternatives, and an `svc_type` pick-list for the class the locator confirms.
 
 ![Services attribute table in QGIS](docs/screenshots/qgis_attribute_table.png)
 
-**4. Each radargram is annotated** – every fitted hyperbola with its depth (right axis).
+**4. Each radargram is annotated** – the source file name and line length, and every fitted
+hyperbola with its depth (right axis). Distances and depths can be shown in metres or feet.
 
 ![Annotated radargram for one survey line](docs/screenshots/annotated_radargram.png)
 
@@ -175,7 +176,10 @@ velocity, depth, permittivity, fitted radius, semblance, confidence, polarity, `
 **`survey_lines`** — the swaths as acquired, with SNR, trace spacing and position source.
 
 **`qa/LINExx.png`** — processed radargram with each fitted hyperbola drawn on and its depth;
-green = confident, amber = check. **`qa/overview.png`** — plan of lines, detections and runs.
+green = confident, amber = check. Each image is labelled with the source file name (e.g.
+`LINE03.DT1`) and the line length, with distances and depths in metres or feet (`--units`, or
+*Distance units on radargram images* in the QGIS/ArcGIS advanced options). GIS attributes stay
+in metres. **`qa/overview.png`** — plan of lines, detections and runs.
 
 **`interpretation_report.md`** — summary table plus every decision the agent made.
 
@@ -254,6 +258,7 @@ python tests/evaluate.py <survey_folder> <out_folder>   # score any run that has
 | `--link-dist` | 3.0 | max plan distance between linked crossings (m) |
 | `--min-points` | 3 | crossings needed to report a service run |
 | `--model FILE.onnx` | — | use a trained detector alongside the physics |
+| `--units m\|ft` | m | distance and depth units on the radargram images |
 
 Python API:
 

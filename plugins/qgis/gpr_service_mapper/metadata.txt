@@ -3,7 +3,7 @@ name=GPR Service Mapper
 qgisMinimumVersion=3.22
 description=Interprets ground-penetrating radar (GSSI .DZT, Sensors & Software .DT1) to map underground services as GIS layers.
 about=Reads raw GPR survey lines with their GNSS positions (in the coordinate system they were captured in), processes them, detects pipe and cable hyperbolas, estimates depth and site velocity, traces services across lines, and loads styled survey lines, detections and services (GeoPackage + Shapefile, in the output coordinate system you choose) into the project with an HTML interpretation report. Results are decision support for a competent locator, not a substitute for verification.
-version=0.3.1
+version=0.3.2
 author=Macalister Walton
 homepage=https://github.com/MacWalton/GPR-Mapping-Ai
 repository=https://github.com/MacWalton/GPR-Mapping-Ai
@@ -15,7 +15,8 @@ icon=icon.svg
 experimental=True
 deprecated=False
 hasProcessingProvider=yes
-changelog=0.3.1 ArcGIS Pro toolbox tested in ArcGIS Pro 3.5.9. MIT licence; repository links; author email removed; ArcGIS Pro toolbox released alongside (ongoing testing - use at own risk).
+changelog=0.3.2 Radargram images labelled with the source file name and line length; distances and depths in metres or feet; clearer depth labels.
+  0.3.1 ArcGIS Pro toolbox tested in ArcGIS Pro 3.5.9. MIT licence; repository links; author email removed; ArcGIS Pro toolbox released alongside (ongoing testing - use at own risk).
   0.3.0 Service classification: material, size class, suggested AS 5488 utility class with alternatives and confidence; svc_type pick-list; services coloured by AS 5488 class. Report overview map and service coordinates in the output coordinate system.
   0.2.1 Re-fits services that cross survey lines at an angle (correct depth and polarity); runs with flipping polarity or erratic depth are flagged CHECK.
   0.2.0 Survey and output coordinate system selection (GDA2020, GDA94, MGA, WGS 84 and any QGIS CRS); eastings/northings accepted in CSVs; datum-change warning.

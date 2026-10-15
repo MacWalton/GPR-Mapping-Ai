@@ -12,7 +12,7 @@ from qgis.core import (
     QgsProcessingOutputHtml,
     QgsProcessingOutputNumber,
     QgsProcessingOutputVectorLayer,
-    QgsProcessingParameterBoolean,
+    QgsProcessingParameterBoolean, QgsProcessingParameterEnum,
     QgsProcessingParameterCrs,
     QgsProcessingParameterDefinition,
     QgsProcessingParameterFile,
@@ -76,6 +76,8 @@ class InterpretGprSurvey(QgsProcessingAlgorithm):
     MODEL = "MODEL"
     SHP = "WRITE_SHAPEFILES"
     QA = "QA_IMAGES"
+    UNITS = "DISTANCE_UNITS"
+    UNIT_CODES = ["m", "ft"]
     OUTPUT = "OUTPUT_FOLDER"
 
     # ---- metadata
@@ -154,6 +156,8 @@ class InterpretGprSurvey(QgsProcessingAlgorithm):
                                        extension="onnx", optional=True),
             QgsProcessingParameterBoolean(self.SHP, "Also write Shapefiles", defaultValue=True),
             QgsProcessingParameterBoolean(self.QA, "Draw QA radargram images", defaultValue=True),
+            QgsProcessingParameterEnum(self.UNITS, "Distance units on radargram images",
+                                       options=["Metres (m)", "Feet (ft)"], defaultValue=0),
         ]
         for p in adv:
             p.setFlags(p.flags() | QgsProcessingParameterDefinition.FlagAdvanced)
@@ -209,6 +213,7 @@ class InterpretGprSurvey(QgsProcessingAlgorithm):
             antenna_offset_m=self.parameterAsDouble(parameters, self.OFFSET, context),
             model_path=model,
             qa_images=self.parameterAsBoolean(parameters, self.QA, context),
+            distance_units=self.UNIT_CODES[self.parameterAsEnum(parameters, self.UNITS, context)],
             input_crs=survey_crs.authid(),
             output_crs=f"{out_crs.description()} ({out_crs.authid()})",
         )

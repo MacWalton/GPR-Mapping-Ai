@@ -31,6 +31,8 @@ def main(argv=None):
     r.add_argument("--link-dist", type=float, default=3.0, help="max m between linked crossings")
     r.add_argument("--min-points", type=int, default=3, help="crossings needed to trace a service")
     r.add_argument("--model", help="optional ONNX hyperbola detector")
+    r.add_argument("--units", choices=["m", "ft"], default="m",
+                   help="distance/depth units on the radargram images (default m)")
 
     s = sub.add_parser("synth", help="write a synthetic test survey")
     s.add_argument("out")
@@ -48,7 +50,7 @@ def main(argv=None):
         linker=LinkConfig(max_link_m=a.link_dist, min_points=a.min_points),
         channel=a.channel, lines_csv=a.lines_csv, straight_lines=a.straight_lines,
         antenna_offset_m=a.antenna_offset, model_path=a.model,
-        input_crs=a.input_crs, output_crs=a.output_crs,
+        input_crs=a.input_crs, output_crs=a.output_crs, distance_units=a.units,
     )
     s = SurveyAgent(cfg).run(a.input, a.out)
     print(f"{len(s['lines'])} lines | v={s['site_velocity_m_ns']} m/ns | "

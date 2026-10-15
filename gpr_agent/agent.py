@@ -39,6 +39,7 @@ class AgentConfig:
     two_pass_velocity: bool = True
     write_training_labels: bool = True
     qa_images: bool = True
+    distance_units: str = "m"             # "m" or "ft" for distances/depths on the radargram images
     input_crs: str = "EPSG:4326"           # CRS the GPS / survey coordinates were captured in
     output_crs: str = "EPSG:4326"          # CRS the GIS layers are written in
 
@@ -301,7 +302,8 @@ class SurveyAgent:
         for L in lines:
             p = L["proc"]
             if cfg.qa_images:
-                qa_ok &= plot_line_qa(p, dets_by_line[p.name], site_v, out_dir / "qa" / f"{p.name}.png")
+                qa_ok &= plot_line_qa(p, dets_by_line[p.name], site_v, out_dir / "qa" / f"{p.name}.png",
+                                      units=cfg.distance_units)
             if cfg.write_training_labels:
                 td = out_dir / "training_labels"
                 td.mkdir(exist_ok=True)
